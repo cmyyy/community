@@ -5,6 +5,7 @@ import org.cmy.community.dto.GithubUser;
 import org.cmy.community.mapper.UserMapper;
 import org.cmy.community.model.User;
 import org.cmy.community.provider.GithubProvider;
+import org.cmy.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,10 +31,8 @@ public class AuthorizeController {
     private String clientSecret;
     @Value("${github.redirect.uri}")
     private String redirectUri;
-
     @Autowired
-    private UserMapper userMapper;
-
+    private UserService userService;
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code")String code,
                            @RequestParam(name = "state") String state,
@@ -46,16 +45,16 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        if(githubUser != null){
+
+        if(githubUser != null && githubUser.getId() != null){
             //登陆成功 写cookie和session
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            userMapper.insert(user);
+            user.setAvatarUrl(githubUser.getAvatarUrl());
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
             return "redirect:/";
         }else{
@@ -63,4 +62,15 @@ public class AuthorizeController {
             return "redirect:/";
         }
     }
+
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
+
 }

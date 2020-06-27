@@ -8,10 +8,13 @@
 [Github OAuth](https://developer.github.com/apps/building-oauth-apps/)
 [spring boot](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support)
 [mybatis+sprint boot](http://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
+[Flyway](https://flywaydb.org/getstarted/firststeps/maven)
+[thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
 ## Tools
 Git
 [Visual Paradigm](https://www.visual-paradigm.com)
-
+[flyway]
+[lombok]
 
 ## script
 ```sql
@@ -24,6 +27,7 @@ CREATE TABLE USER(
     GMT_MODIFIED BIGINT
 );
 ```
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 
 ## Day01
 Bug1: Can't connect to api.github.com when in `githubProvider.getUser();`.
