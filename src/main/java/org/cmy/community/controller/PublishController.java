@@ -19,8 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
     @Autowired
     private QuestionService questionService;
+
+    /**
+     * 编辑问题
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id")Integer id,
+    public String edit(@PathVariable(name = "id")Long id,
                        Model model){
         QuestionDTO question = questionService.getById(id);
         model.addAttribute("title", question.getTitle());
@@ -36,12 +43,22 @@ public class PublishController {
         return "publish";
     }
 
+    /**
+     * 发布问题
+     * @param title
+     * @param description
+     * @param tag
+     * @param id
+     * @param request
+     * @param model
+     * @return
+     */
     @PostMapping("/publish")
     public String doPublish(
             @RequestParam(value = "title",required = false) String title,
             @RequestParam(value = "description",required = false) String description,
             @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "id",required = false) Integer id,
+            @RequestParam(value = "id",required = false) Long id,
             HttpServletRequest request,
             Model model){
 

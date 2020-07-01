@@ -11,7 +11,10 @@ body{
     float: right;
     margin-bottom: 15px;
 }
-
+.btn-comment{
+    float: right;
+    margin-bottom: 10px;
+}
 .attention{
     margin-bottom: 15px;
 }
@@ -21,6 +24,13 @@ body{
     height: 38px;
 }
 
+.comment{
+    margin: 10px 0;
+}
+.media-body{
+    padding-top: 10px;
+
+}
 .text-desc{
     font-size: 12px;
     font-weight: normal;
@@ -34,4 +44,9 @@ body{
 .community-menu{
     font-size: 13px;
     color: #999999;
+}
+
+.jumbotron{
+    margin: 50px;
+    background-color: lightgray;
 }

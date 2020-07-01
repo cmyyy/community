@@ -3,6 +3,9 @@ package org.cmy.community.service;
 import org.apache.ibatis.session.RowBounds;
 import org.cmy.community.dto.PaginationDTO;
 import org.cmy.community.dto.QuestionDTO;
+import org.cmy.community.exception.CustomizedErrorCode;
+import org.cmy.community.exception.CustomizedException;
+import org.cmy.community.mapper.QuestionExtMapper;
 import org.cmy.community.mapper.QuestionMapper;
 import org.cmy.community.mapper.UserMapper;
 import org.cmy.community.model.Question;
@@ -21,7 +24,8 @@ public class QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     /**
      * 1.利用QuestionMapper查询到数据库中的Question数据
      * 2.利用UserMapper查询提问者，即User信息
@@ -68,7 +72,7 @@ public class QuestionService {
      * @param size
      * @return
      */
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
         QuestionExample questionExample = new QuestionExample();
@@ -106,8 +110,11 @@ public class QuestionService {
      * @param id
      * @return
      */
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizedException(CustomizedErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -115,6 +122,10 @@ public class QuestionService {
         return questionDTO;
     }
 
+    /**
+     * 创建问题或者更新问题
+     * @param question
+     */
     public void createOrUpdate(Question question) {
         if (question.getId() == null){
             //创建
@@ -134,8 +145,22 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria().
                     andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion, example);
+            int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
+            if (updated != 1){
+                throw new CustomizedException(CustomizedErrorCode.QUESTION_NOT_FOUND);
+            }
 
         }
+    }
+
+    /**
+     * 增加浏览量
+     * @param id
+     */
+    public void incView(Long id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
