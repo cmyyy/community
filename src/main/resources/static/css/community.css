@@ -42,11 +42,60 @@ body{
 }
 
 .community-menu{
+    display: block;
     font-size: 13px;
     color: #999999;
+    margin-bottom: 15px;
 }
 
 .jumbotron{
     margin: 50px;
     background-color: lightgray;
+}
+.comment-sp{
+    margin-top: 0;
+}
+
+.menu{
+    margin-top: 5px;
+    color:#999 ;
+}
+
+.menu .icon{
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu .comment-icon{
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu .comment-icon:hover{
+    color: #499ef3;
+}
+
+.sub-comments{
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+.sub-comments .btn{
+    margin: 10px 0;
+}
+.menu .active{
+    color: #499ef3;
+}
+.menu .icon:hover{
+    color: #499ef3;
+}
+
+.comments{
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eeeeee;
+}
+.question-title{
+    margin-top: 25px;
 }
