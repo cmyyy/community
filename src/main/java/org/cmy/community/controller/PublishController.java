@@ -1,6 +1,9 @@
 package org.cmy.community.controller;
 
+import org.apache.commons.lang3.StringUtils;
+import org.cmy.community.cache.TagCache;
 import org.cmy.community.dto.QuestionDTO;
+import org.cmy.community.dto.TagDTO;
 import org.cmy.community.mapper.QuestionMapper;
 import org.cmy.community.model.Question;
 import org.cmy.community.model.User;
@@ -34,12 +37,20 @@ public class PublishController {
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
         model.addAttribute("id", question.getId());
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     //post执行请求 get渲染页面
+
+    /**
+     * 第一次进入 发布页面
+     * @param model
+     * @return
+     */
     @GetMapping("/publish")
-    public String publish(){
+    public String publish(Model model){
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -65,6 +76,7 @@ public class PublishController {
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
         model.addAttribute("title", title);
+        model.addAttribute("tags", TagCache.get());
         //下面这三个if语句实际上前后端都需要做，不过我把重点放在后端
         if(title == null || title.equals("")){
             model.addAttribute("error","标题不能为空");
@@ -76,6 +88,12 @@ public class PublishController {
         }
         if(tag == null || tag.equals("")){
             model.addAttribute("error","标签不能为空");
+            return "publish";
+        }
+
+        String invalid = TagCache.filterInvalid(tag);
+        if(StringUtils.isNotBlank(invalid)){
+            model.addAttribute("error","输入非法标签："+invalid);
             return "publish";
         }
         User user = (User) request.getSession().getAttribute("user");
