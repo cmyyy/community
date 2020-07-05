@@ -1,5 +1,6 @@
 package org.cmy.community.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.cmy.community.dto.AccessTokenDTO;
 import org.cmy.community.dto.GithubUser;
 import org.cmy.community.mapper.UserMapper;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -59,6 +61,7 @@ public class AuthorizeController {
             return "redirect:/";
         }else{
             //登陆失败，重新登陆
+            log.error("callback get  github error,{}", githubUser);
             return "redirect:/";
         }
     }

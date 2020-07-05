@@ -7,7 +7,10 @@ public enum CustomizedErrorCode implements ICustomizedErrorCode{
     SYSTEM_ERRO(2004, "对不起，服务器有点问题，正在抢修"),
     TYPE_PARAM_WRONG(2005, "评论类型错误或不存在"),
     COMMENT_NOT_FOUND(2006,"您所回复的评论消失了"),
-    EMPTY_CONTENT(2007,"输入不能为空")
+    EMPTY_CONTENT(2007,"输入不能为空"),
+    READ_NOTIFICATION_FAIL(2008,"请不要看发给别人的通知"),
+    NOTIFICATION_NOT_FOUND(2009,"通知信息消失了"),
+    FILE_UPLOAD_FAIL(2010,"图片上传失败"),
     ;
     private String message;
     private Integer code;
