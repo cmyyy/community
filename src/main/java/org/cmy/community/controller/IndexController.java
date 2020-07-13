@@ -1,5 +1,7 @@
 package org.cmy.community.controller;
 
+import javafx.stage.StageStyle;
+import org.cmy.community.cache.HotTagCache;
 import org.cmy.community.dto.PaginationDTO;
 import org.cmy.community.dto.QuestionDTO;
 import org.cmy.community.mapper.QuestionMapper;
@@ -22,17 +24,22 @@ public class IndexController {
 
     @Autowired
     private QuestionService questionService;
-
+    @Autowired
+    private HotTagCache hotTagCache;
     @GetMapping("/")
     public String hello(HttpServletRequest request,
                         Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "5") Integer size,
-                        @RequestParam(name = "search", required = false) String search){
+                        @RequestParam(name = "search", required = false) String search,
+                        @RequestParam(name = "tag", required = false) String tag){
 
-        PaginationDTO pagination = questionService.list(search, page,size);
+        PaginationDTO pagination = questionService.list(search, tag, page,size);
+        List<String> tags = hotTagCache.getHots();
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);
+        model.addAttribute("tag", tag);
+        model.addAttribute("tags", tags);
         return "index";
     }
 }

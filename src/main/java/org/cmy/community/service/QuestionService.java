@@ -39,10 +39,11 @@ public class QuestionService {
      *
      * @return 分页信息
      * @param search
+     * @param tag
      * @param page  页码
      * @param size  每页显示条数
      */
-    public PaginationDTO list(String search, Integer page, Integer size) {
+    public PaginationDTO list(String search, String tag, Integer page, Integer size) {
         if (StringUtils.isNotBlank(search)){
             String[] tags = StringUtils.split(search, " ");
             search = Arrays.stream(tags).collect(Collectors.joining("|"));
@@ -54,6 +55,7 @@ public class QuestionService {
         Integer totalPage;
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
+        questionQueryDTO.setTag(tag);
         Integer totalCount =  questionExtMapper.countBySearch(questionQueryDTO);
         totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
         if (page < 1) {
