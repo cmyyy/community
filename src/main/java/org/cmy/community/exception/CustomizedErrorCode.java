@@ -11,6 +11,8 @@ public enum CustomizedErrorCode implements ICustomizedErrorCode{
     READ_NOTIFICATION_FAIL(2008,"请不要看发给别人的通知"),
     NOTIFICATION_NOT_FOUND(2009,"通知信息消失了"),
     FILE_UPLOAD_FAIL(2010,"图片上传失败"),
+    COMMENT_LIKE_TWICE(2011,"请勿重复点赞"),
+    COMMENT_LIKE_FAIL(2012, "点赞失败")
     ;
     private String message;
     private Integer code;

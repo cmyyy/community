@@ -113,6 +113,26 @@ function collapseComments(e) {
     }
 }
 
+/**
+ * 点赞评论
+ * @param e
+ * @returns {boolean}
+ */
+function likeComment(e) {
+    var id = e.getAttribute("data-commentid");
+    var url = "/likeComment";
+    var args = {"id": id, "time": new Date()};
+    $.get(url, args, function (data) {
+        if (data.code == 200) {
+            e.classList.add("active");
+            window.location.reload();
+
+        } else {
+            alert(data.message);
+        }
+    })
+    return false;
+}
 function selectTag(e) {
     var value = e.getAttribute("data-tag");
     var previous = $("#tag").val();

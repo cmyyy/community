@@ -38,8 +38,8 @@ public class QuestionService {
      * 5.将questionDTOList放入paginationDTO
      *
      * @return 分页信息
-     * @param search
-     * @param tag
+     * @param search 搜索字段
+     * @param tag   标签
      * @param page  页码
      * @param size  每页显示条数
      */
@@ -56,7 +56,7 @@ public class QuestionService {
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
         questionQueryDTO.setTag(tag);
-        Integer totalCount =  questionExtMapper.countBySearch(questionQueryDTO);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
         totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
         if (page < 1) {
             page = 1;
